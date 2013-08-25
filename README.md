@@ -1,7 +1,6 @@
 LoadedDice
 ==========
 
-Loaded Dice
 Write a program using C++ to do the following
 
 Simulate the rolling of two 6-sided dice.  Each dice will be loaded so that one side comes up more frequently than the others.  
