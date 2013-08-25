@@ -1,0 +1,13 @@
+NumRolls=1000
+Dice=Die1
+LoadedSide=3
+LoadAmount=2
+Dice=Die2
+LoadedSide=4
+LoadAmount=10
+Dice=Die3
+LoadedSide=2
+LoadAmount=4
+Dice=Die4
+LoadedSide=1
+LoadAmount=5
