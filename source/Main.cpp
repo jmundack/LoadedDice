@@ -1,8 +1,14 @@
-#include <algorithm>
-#include <boost/ptr_container/ptr_vector.hpp>
-#include <iostream>
-#include <map>
-#include "Dice.h"
+/**
+ * \file Main.cpp
+ *
+ * \brief This program will load a dice confiration file
+ *        run simulation on the dice rolls and pront out statistics
+ */
+#include <algorithm>                          // needed for count
+#include <boost/ptr_container/ptr_vector.hpp> // needed for ptr_vector
+#include <iostream>                           // cout/cerr
+#include <map>                                // used to store results 
+#include "Dice.h"                             
 #include "ReadDiceConfiguration.h"
 
 using namespace boost;

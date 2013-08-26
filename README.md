@@ -59,6 +59,8 @@ How to build:
 >> cd build
 >> ./bootstrap.sh
 
+NOTE: To enable debug logs - pass "-DDEBUG=ON" to boostrap script
+
 -- This will install the program to build/debug/bin
 run LoadedDice <Configuration File> to see the output
 

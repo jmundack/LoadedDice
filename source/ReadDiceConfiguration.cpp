@@ -1,6 +1,14 @@
+/**
+ * \file ReadDiceConfiguration.cpp
+ * \author Joseph Mundackal
+ * \date 08-25-2013
+ *
+ * \brief This file contains the implementaion of the ReadDiceConfiguration class
+ */
+
+
 #include "ReadDiceConfiguration.h"
 #include <boost/lexical_cast.hpp>
-
 #include <iostream>
 #include <fstream>
 
@@ -18,6 +26,11 @@ namespace
    {
       DEBUG_LOG << "Parsing Line : " << line << endl;
       const size_t equalPos(line.find("="));
+      if (equalPos != line.rfind("=")) // detect multiple = signs
+      {
+         cerr << "Multiple '=' found in Line : " << line << endl;
+         throw "Invalid Line in configuration file";
+      }
       const string key(line.substr(0,equalPos));
       const string value(line.substr(equalPos+1));
       if (key.empty() || value.empty() || equalPos == string::npos)
@@ -39,8 +52,8 @@ ReadDiceConfiguration::ReadDiceConfiguration(const string &filename):_NumRolls(0
       {
          string line;
          inFile >> line;
-         if (!line.empty())
-            keyValuePairs.push_back(_ParseLine(line));
+         if (!line.empty()) // skip empty lines
+            keyValuePairs.push_back(_ParseLine(line)); // add key values pairs
       }
    }
    else
@@ -63,11 +76,14 @@ ReadDiceConfiguration::ReadDiceConfiguration(const string &filename):_NumRolls(0
       }
       else if (itr->first == "Dice")
       {
-         if (!diceName.empty())
+         if (!diceName.empty()) // we are already reading in a dice data - so add it and start reading new dice data
          {
             DiceData data(diceName,loadedSide,loadAmount);
             _DiceData.push_back(data);
             diceName = itr->second;
+            // reset values
+            loadedSide = 0; 
+            loadAmount = 0;
          }
          diceName = itr->second;
       }
@@ -75,12 +91,12 @@ ReadDiceConfiguration::ReadDiceConfiguration(const string &filename):_NumRolls(0
          loadedSide = lexical_cast<size_t>(itr->second);
       else if (itr->first == "LoadAmount")
          loadAmount = lexical_cast<size_t>(itr->second);
-      else
+      else // ignore unrecognized key value pairs
       {
-         cerr << "Ignoring invlaid key valud pair : Key - " << itr->first << " value - " << itr->second << endl;
+         cerr << "******** Ignoring invlaid key valud pair : Key - " << itr->first << " value - " << itr->second << endl;
       }
    }
-   if (!diceName.empty())
+   if (!diceName.empty()) // we need to add the last read dice data
    {
       DiceData data(diceName,loadedSide,loadAmount);
       _DiceData.push_back(data);

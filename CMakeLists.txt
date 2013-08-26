@@ -5,6 +5,9 @@ set(CMAKE_INSTALL_PREFIX "debug")
 add_definitions(-Wall -Werror) # enable all warnings and mark warnings as errors
 add_definitions(-O3)  # enable optimizations
 add_definitions(-g)  # enable debugging 
+if(DEBUG)
+   add_definitions(-DDEBUG)
+endif()
 
 find_package(Boost REQUIRED)
 if(Boost_FOUND)
