@@ -1,8 +1,7 @@
-#include <iostream>
-#include <boost/ptr_container/ptr_vector.hpp>
-#include <map>
 #include <algorithm>
-#include <ctime>
+#include <boost/ptr_container/ptr_vector.hpp>
+#include <iostream>
+#include <map>
 #include "Dice.h"
 #include "ReadDiceConfiguration.h"
 
@@ -11,14 +10,19 @@ using namespace std;
 
 int main ( int argc, char *argv[] )
 {
+   // validate input arguments
    if (argc != 2)
    {
       cerr << "Usage : " << argv[0] << " <dice configuration file>" << endl;
       return 1;
    }
+
+   // Read dice configurations from input file
    const string configurationFilename(argv[1]);
    ReadDiceConfiguration configurations(configurationFilename);
    const vector<DiceData> &diceData(configurations.GetDiceData());
+
+   // Log dice configurations
    cout << "Dice Configurations --> " << endl;
    cout << "Num rolls : " << configurations.GetNumRolls() << endl;
    for(size_t i = 0; i < diceData.size(); i++)
@@ -29,13 +33,16 @@ int main ( int argc, char *argv[] )
       cout << "\t Load Amount : " << diceData.at(i).GetLoadAmount() << endl;
    }
 
-   map<string, vector<size_t> > results;
+   // Create all the dice form the configurations
    ptr_vector<Dice> dices;
    for(size_t i = 0; i < diceData.size(); i++)
    {
       const DiceData &data(diceData.at(i));
       dices.push_back(new Dice(data.GetName(), data.GetLoadedSide(), data.GetLoadAmount()));
    }
+
+   // roll each dice the specified # times and store the results
+   map<string, vector<size_t> > results;
    for (size_t i = 0; i < configurations.GetNumRolls(); i++)
    {
       for(size_t j = 0; j < dices.size(); j++)
@@ -44,8 +51,8 @@ int main ( int argc, char *argv[] )
       }
    }
 
+   // Output results in the specified format
    cout << "\n\n********** Output **********\n";
-
    for (size_t i = 0; i < configurations.GetNumRolls(); i++)
    {
       cout << "Throw " << i << " : ";
@@ -61,8 +68,9 @@ int main ( int argc, char *argv[] )
    for(map<string, vector<size_t> >::const_iterator itr = results.begin(); itr != results.end(); ++itr)
    {
       cout << itr->first << " Statistics for " << configurations.GetNumRolls() << " rolls : " << endl;
-      for (size_t i= 1; i < 7; i++)
+      for (size_t i= 1; i <=6; i++)
       {
+         // calculate and display percentages
          const float numOccurances(count(itr->second.begin(), itr->second.end(), i));
          cout << "Side : " << i << " : " << (numOccurances*100/itr->second.size()) << endl;
       }

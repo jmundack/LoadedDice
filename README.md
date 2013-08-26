@@ -54,3 +54,15 @@ Side 4: 7%
 Side 5: 9%
 Side 6: 64%
 
+
+How to build:
+>> cd build
+>> ./bootstrap.sh
+
+-- This will install the program to build/debug/bin
+run LoadedDice <Configuration File> to see the output
+
+NOTE : Example configuration files are located in ConfigurationFiles directory
+
+
+
